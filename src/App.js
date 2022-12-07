@@ -13,8 +13,27 @@ function App() {
   const [provider, setProvider] = useState(null);
   const [address, setAddress] = useState("");
   const [balance, setBalance] = useState("");
+  const [chainId, setChainId] = useState("");
   const [userData, setUserData] = useState({});
 
+  let styles = {
+    button: {
+      width: "100%",
+      maxWidth: 200,
+      cursor: "pointer",
+      background: "#8347E5",
+      border: "1px solid #8347E5",
+      boxSizing: "border-box",
+      borderRadius: "15px",
+      fontSize: 16,
+      color: "#000000",
+      fontWeight: 700,
+      padding: "12px 30px 12px 30px",
+      marginTop: 15,
+      display: "flex",
+      justifyContent: "center",
+    },
+  };
   useEffect(() => {
     const init = async () => {
       try {
@@ -57,15 +76,6 @@ function App() {
     console.log(user);
   };
 
-  const logout = async () => {
-    if (!web3auth) {
-      console.log("web3auth not initialized yet");
-      return;
-    }
-    await web3auth.logout();
-    setProvider(null);
-  };
-
   const getChainId = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
@@ -74,6 +84,7 @@ function App() {
     const rpc = new RPC(provider);
     const chainId = await rpc.getChainId();
     console.log(chainId);
+    setChainId(chainId);
   };
   const getAccounts = async () => {
     if (!provider) {
@@ -116,16 +127,6 @@ function App() {
     console.log(receipt);
   };
 
-  const signMessage = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const signedMessage = await rpc.signMessage();
-    console.log(signedMessage);
-  };
-
   const getPrivateKey = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
@@ -137,32 +138,31 @@ function App() {
   };
   const loggedInView = (
     <>
-      <button onClick={getUserInfo} className="card">
+      <button onClick={getUserInfo} className="card" style={styles.button}>
         Get User Info
       </button>
-      <button onClick={getChainId} className="card">
+      <button onClick={getChainId} className="card" style={styles.button}>
         Get Chain ID
       </button>
-      <button onClick={getAccounts} className="card">
+      <button onClick={getAccounts} className="card" style={styles.button}>
         Get Accounts
       </button>
-      <button onClick={getBalance} className="card">
+      <button onClick={getBalance} className="card" style={styles.button}>
         Get Balance
       </button>
-      <button onClick={sendTransaction} className="card">
+      <button onClick={sendTransaction} className="card" style={styles.button}>
         Send Transaction
       </button>
-      <button onClick={sendContractTransaction} className="card">
+      {/* <button
+        onClick={sendContractTransaction}
+        className="card"
+        style={styles.button}
+      >
         Send Approve Transaction
-      </button>
-      <button onClick={signMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={getPrivateKey} className="card">
+      </button> */}
+
+      <button onClick={getPrivateKey} className="card" style={styles.button}>
         Get Private Key
-      </button>
-      <button onClick={logout} className="card">
-        Log Out
       </button>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
@@ -172,20 +172,34 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
+    <button onClick={login} className="card" style={styles.button}>
       Login
     </button>
   );
 
   return (
-    <div className="container">
-      <h1 className="title">Web3Auth Example</h1>
-      <div className="grid">{provider ? loggedInView : unloggedInView}</div>
-      address: {address}
-      <br />
-      balance: {balance}
-      <br />
-      user: {JSON.stringify(userData)}
+    <div className="container" style={{ textAlign: "center", color: "white" }}>
+      <h3 style={{ textAlign: "center", marginTop: 30 }}>
+        Web3Auth React Example
+      </h3>
+      <div className="row">
+        <div className="col-md-3">
+          {" "}
+          <div className="grid">{provider ? loggedInView : unloggedInView}</div>
+        </div>
+        <div className="col-md-9">
+          <div style={{ marginTop: 20, textAlign: "left" }}>
+            address: {address}
+            <br />
+            chainId: {balance}
+            <br />
+            balance: {balance}
+            <br />
+            user:{" "}
+            <span style={{ fontSize: 12 }}>{JSON.stringify(userData)}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
