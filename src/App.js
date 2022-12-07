@@ -191,7 +191,7 @@ function App() {
           <div style={{ marginTop: 20, textAlign: "left" }}>
             address: {address}
             <br />
-            chainId: {balance}
+            chainId: {chainId}
             <br />
             balance: {balance}
             <br />
