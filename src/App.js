@@ -153,13 +153,13 @@ function App() {
       <button onClick={sendTransaction} className="card" style={styles.button}>
         Send Transaction
       </button>
-      {/* <button
+      <button
         onClick={sendContractTransaction}
         className="card"
         style={styles.button}
       >
         Send Approve Transaction
-      </button> */}
+      </button>
 
       <button onClick={getPrivateKey} className="card" style={styles.button}>
         Get Private Key
