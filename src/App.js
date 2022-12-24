@@ -65,6 +65,18 @@ function App() {
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
   };
+  const logout = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.logout();
+    setProvider(web3authProvider);
+    setBalance("");
+    setAddress("");
+    setUserData({});
+    setChainId("");
+  };
 
   const getUserInfo = async () => {
     if (!web3auth) {
@@ -164,6 +176,9 @@ function App() {
       <button onClick={getPrivateKey} className="card" style={styles.button}>
         Get Private Key
       </button>
+      <button onClick={logout} className="card" style={styles.button}>
+        Logout
+      </button>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
@@ -178,7 +193,15 @@ function App() {
   );
 
   return (
-    <div className="container" style={{ textAlign: "center", color: "white" }}>
+    <div
+      className="container"
+      style={{
+        textAlign: "center",
+        color: "white",
+        paddingLeft: "5%",
+        paddingRight: "5%",
+      }}
+    >
       <h3 style={{ textAlign: "center", marginTop: 30 }}>
         Web3Auth React Example
       </h3>
@@ -191,9 +214,12 @@ function App() {
           <div style={{ marginTop: 20, textAlign: "left" }}>
             address: {address}
             <br />
+            <br />
             chainId: {chainId}
             <br />
+            <br />
             balance: {balance}
+            <br />
             <br />
             user:{" "}
             <span style={{ fontSize: 12 }}>{JSON.stringify(userData)}</span>
