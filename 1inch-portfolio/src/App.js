@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import WakuChat from "./pages/WakuChat";
-// Waku imports
-import { LightNodeProvider, ContentPairProvider } from "@waku/react";
-import { Protocols } from "@waku/sdk";
+import UserPortfolio from "./pages/UserPortfolio";
+import { CssBaseline } from "@mui/material";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -24,16 +22,10 @@ function App() {
   }, []);
 
   return (
-    <LightNodeProvider
-      options={{ defaultBootstrap: true }}
-      protocols={[Protocols.Store, Protocols.Filter, Protocols.LightPush]}
-    >
-      <div>
-        <ContentPairProvider contentTopic={"/wakuchat/" + 333}>
-          <WakuChat currentUser={currentUser} />
-        </ContentPairProvider>
-      </div>
-    </LightNodeProvider>
+    <div style={{ backgroundColor: "#000000", height: "100vh" }}>
+      <CssBaseline />
+      <UserPortfolio currentUser={currentUser} />
+    </div>
   );
 }
 

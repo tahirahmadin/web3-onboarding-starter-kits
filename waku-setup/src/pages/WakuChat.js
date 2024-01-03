@@ -49,6 +49,7 @@ function WakuChat({ currentUser }) {
   // Local states
   const [inputValue, setInputValue] = useState("");
   const [allChats, setAllChats] = useState(null);
+
   //waku states
   const [nodeStart, setNodeStart] = useState(false);
 
@@ -92,6 +93,28 @@ function WakuChat({ currentUser }) {
     setAllChats(messages);
   }, [storeMessages, filterMessages]);
 
+  // Waku inner function to decode encrypted messages
+  function decodeMessage(wakuMessage) {
+    if (!wakuMessage.payload) return;
+
+    const { timestamp, from, to, messageValue } = ChatMessage.decode(
+      wakuMessage.payload
+    );
+
+    if (!timestamp || !from || !to || !messageValue) return;
+
+    const time = new Date();
+    time.setTime(Number(timestamp));
+
+    return {
+      timestamp: time,
+      from,
+      to,
+      messageValue,
+      timestampInt: wakuMessage.timestamp,
+    };
+  }
+
   // Function to send message
   const handleSendMessage = async () => {
     await sendMessage(currentUser, inputValue);
@@ -118,26 +141,6 @@ function WakuChat({ currentUser }) {
     });
   }
 
-  function decodeMessage(wakuMessage) {
-    if (!wakuMessage.payload) return;
-
-    const { timestamp, from, to, messageValue } = ChatMessage.decode(
-      wakuMessage.payload
-    );
-
-    if (!timestamp || !from || !to || !messageValue) return;
-
-    const time = new Date();
-    time.setTime(Number(timestamp));
-
-    return {
-      timestamp: time,
-      from,
-      to,
-      messageValue,
-      timestampInt: wakuMessage.timestamp,
-    };
-  }
   return (
     <div
       className="container"
