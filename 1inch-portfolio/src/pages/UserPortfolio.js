@@ -4,6 +4,7 @@ import {
   getTokenBalancesOfWalletAddress,
   getTokenDetailsByAddresses,
 } from "../actions/serverActions";
+
 import { Box, Typography } from "@mui/material";
 import Web3 from "web3";
 
